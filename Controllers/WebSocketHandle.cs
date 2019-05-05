@@ -42,8 +42,10 @@ namespace SmartPCServer.Controllers
             string messageReceived = Encoding.Default.GetString(new ArraySegment<byte>(buffer, 0, result.Count));
 
             VirtualMouse.MouseCommand mc = VirtualMouse.JsonToMouseCommand(messageReceived);
-            Console.WriteLine("Parsing Command: " + mc);
-            if(mc.command == "move")
+            
+            //Console.WriteLine("Parsing Command: " + mc);
+
+            if (mc.command == "move")
             {
                 mouse.Move(mc.x, mc.y);
             }
@@ -55,6 +57,22 @@ namespace SmartPCServer.Controllers
             else if(mc.command == "left_click")
             {
                 mouse.LeftClick();
+            }
+            else if(mc.command == "left_down")
+            {
+                mouse.LeftDown();
+            }
+            else if(mc.command == "left_up")
+            {
+                mouse.LeftUp();
+            }
+            else if (mc.command == "right_down")
+            {
+                mouse.RightDown();
+            }
+            else if (mc.command == "right_up")
+            {
+                mouse.RightUp();
             }
             else if(mc.command == "touchpad_start")
             {
