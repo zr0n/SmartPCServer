@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -20,8 +21,16 @@ namespace SmartPCServer.MouseManipulator
         private const int MOUSEEVENTF_MIDDLEUP = 0x0040;
         private const int MOUSEEVENTF_ABSOLUTE = 0x8000;
 
+        private const int MOUSE_SPEED = 10;
+
         private int x;
         private int y;
+
+
+        private int ServerStartX;
+        private int ServerStartY;
+        private int ClientStartX;
+        private int ClientStartY;
         
         [DataContract]
         public class MouseCommand
@@ -78,6 +87,20 @@ namespace SmartPCServer.MouseManipulator
             return Encoding.UTF8.GetString(jsonByteArray, 0, jsonByteArray.Length);
         }
 
+        public void TouchpadStart(int clientStartX, int clientStartY)
+        {
+            ClientStartX = clientStartX;
+            ClientStartY = clientStartY;
+            ServerStartX = x;
+            ServerStartY = y;
+        }
+        public void TouchpadMove(int clientCurrentX, int clientCurrentY)
+        {
+            int newX = ServerStartX +  (MOUSE_SPEED * (clientCurrentX - ClientStartX));
+            int newY = ServerStartY + (MOUSE_SPEED * (clientCurrentY - ClientStartY));
+            MoveTo(newX, newY);
+
+        }
         public void Move(int xDelta, int yDelta)
         {
             x += xDelta;
@@ -86,6 +109,8 @@ namespace SmartPCServer.MouseManipulator
         }
         public void MoveTo(int x, int y)
         {
+            this.x = x;
+            this.y = y;
             mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, x, y, 0, 0);
         }
         public void LeftClick()

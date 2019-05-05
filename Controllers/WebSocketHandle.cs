@@ -56,6 +56,14 @@ namespace SmartPCServer.Controllers
             {
                 mouse.LeftClick();
             }
+            else if(mc.command == "touchpad_start")
+            {
+                mouse.TouchpadStart(mc.x, mc.y);
+            }
+            else if(mc.command == "touchpad_move")
+            {
+                mouse.TouchpadMove(mc.x, mc.y);
+            }
             else
             {
                 return Error();
