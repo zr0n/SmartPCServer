@@ -44,13 +44,17 @@ namespace SmartPCServer.MouseManipulator
             [DataMember]
             public string command;
 
+            [DataMember]
+            public float extra;
+
 
             public override string ToString()
             {
                 string o = "";
                 o += "{{{ Command: " + command;
                 o += " X: " + x;
-                o += " Y: " + y + " }}}";
+                o += " Y: " + y;
+                o += " Extra: " + extra + " }}}";
 
                 return o;
             }

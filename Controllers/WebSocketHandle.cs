@@ -13,17 +13,21 @@ namespace SmartPCServer.Controllers
     public class WebSocketHandle
     {
         private WebSocket webSocket;
+        private AudioManipulator audio;
+        private VirtualMouse mouse;
+
         public byte[] buffer;
 
         public object Enconding { get; private set; }
 
-        private VirtualMouse mouse;
         public WebSocketHandle(WebSocket webSocket)
         {
             // 4kb buffer
             buffer = new byte[1024 * 4];
             this.webSocket = webSocket;
+
             mouse = new VirtualMouse();
+            audio = new AudioManipulator();
         }
 
 
@@ -81,6 +85,10 @@ namespace SmartPCServer.Controllers
             else if(mc.command == "touchpad_move")
             {
                 mouse.TouchpadMove(mc.x, mc.y);
+            }
+            else if(mc.command == "set_volume")
+            {
+                audio.SetVolume(mc.x);
             }
             else
             {
