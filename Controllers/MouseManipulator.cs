@@ -21,7 +21,8 @@ namespace SmartPCServer.MouseManipulator
         private const int MOUSEEVENTF_MIDDLEUP = 0x0040;
         private const int MOUSEEVENTF_ABSOLUTE = 0x8000;
 
-        private const int MOUSE_SPEED = 10;
+        private const int MOUSE_SPEED_MIN = 1;
+        private const int MOUSE_SPEED_MAX = 50;
 
         private int x;
         private int y;
@@ -98,12 +99,21 @@ namespace SmartPCServer.MouseManipulator
             ServerStartX = x;
             ServerStartY = y;
         }
-        public void TouchpadMove(int clientCurrentX, int clientCurrentY)
+        public void TouchpadMove(int clientCurrentX, int clientCurrentY, int speed)
         {
-            int newX = ServerStartX +  (MOUSE_SPEED * (clientCurrentX - ClientStartX));
-            int newY = ServerStartY + (MOUSE_SPEED * (clientCurrentY - ClientStartY));
+            int currSpeed = (int) Lerp(MOUSE_SPEED_MIN, MOUSE_SPEED_MAX, (float) speed / 100);
+
+            Console.WriteLine("currSpeed: " + currSpeed);
+            Console.WriteLine("speed: " + speed);
+            int newX = ServerStartX + (currSpeed * (clientCurrentX - ClientStartX));
+            int newY = ServerStartY + (currSpeed * (clientCurrentY - ClientStartY));
+
             MoveTo(newX, newY);
 
+        }
+        float Lerp(float a, float b, float alpha)
+        {
+            return a + alpha * (b - a);
         }
         public void Move(int xDelta, int yDelta)
         {

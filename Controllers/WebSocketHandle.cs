@@ -84,7 +84,7 @@ namespace SmartPCServer.Controllers
             }
             else if(mc.command == "touchpad_move")
             {
-                mouse.TouchpadMove(mc.x, mc.y);
+                mouse.TouchpadMove(mc.x, mc.y, (int) mc.extra);
             }
             else if(mc.command == "set_volume")
             {
