@@ -103,8 +103,6 @@ namespace SmartPCServer.MouseManipulator
         {
             int currSpeed = (int) Lerp(MOUSE_SPEED_MIN, MOUSE_SPEED_MAX, (float) speed / 100);
 
-            Console.WriteLine("currSpeed: " + currSpeed);
-            Console.WriteLine("speed: " + speed);
             int newX = ServerStartX + (currSpeed * (clientCurrentX - ClientStartX));
             int newY = ServerStartY + (currSpeed * (clientCurrentY - ClientStartY));
 
